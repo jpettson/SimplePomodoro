@@ -1,5 +1,7 @@
 package nu.pettson.simplepomodoro;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView timeText;
     TextView amountText;
+    TextView totalPomodoros;
 
     boolean running = false;
     boolean existingTimer = false;
@@ -23,14 +26,20 @@ public class MainActivity extends AppCompatActivity {
     private long timeLeft = 0;
     private int timesDone = 0;
 
+    SharedPreferences sharedPref;
+    int totalAmountOfTimes = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        totalAmountOfTimes = sharedPref.getInt("totalAmountOfTimes", 0);
 
         timeText = (TextView) findViewById(R.id.timeText);
         amountText = (TextView) findViewById(R.id.amountText);
+        totalPomodoros = (TextView) findViewById(R.id.totalPomodoros);
+        totalPomodoros.setText("Total Pomodoros: " + totalAmountOfTimes);
 
         circle = (ImageView) findViewById(R.id.circleTime);
         start = (ImageView) findViewById(R.id.playIcon);
@@ -103,6 +112,11 @@ public class MainActivity extends AppCompatActivity {
                     createDownTimeCountDown(5000);
                 } else if (timesDone == 4) {
                     createDownTimeCountDown(20000);
+                    totalAmountOfTimes = totalAmountOfTimes + 1;
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putInt("totalAmountOfTimes", totalAmountOfTimes);
+                    editor.commit();
+                    totalPomodoros.setText("Total Pomodoros: " + totalAmountOfTimes);
                 }
 
             }
