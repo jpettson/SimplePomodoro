@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 amountText.setText(timesDone + " of 4");
                 if (timesDone < 4) {
                     createDownTimeCountDown(5000);
-                    //v.vibrate(500);
                     final long[] pattern = {0, 500, 500, 500, 500};
                     v.vibrate(pattern, -1);
                 } else if (timesDone == 4) {
@@ -128,8 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putInt("totalAmountOfTimes", totalAmountOfTimes);
                     editor.commit();
                     //totalPomodoros.setText("Total Pomodoros: " + totalAmountOfTimes);
-                    //v.vibrate(1000);
-                    final long[] pattern = {0, 1000, 500, 1000, 500, 1000, 500};
+                    final long[] pattern = {0, 1000, 200, 1000, 200, 1000, 200};
                     v.vibrate(pattern, -1);
                 }
 
@@ -168,8 +166,6 @@ public class MainActivity extends AppCompatActivity {
                     createCountDown(10000);
                     onDownTime = false;
                     v.vibrate(500);
-                    //final long[] pattern = {0, 500, 500, 500, 500};
-                    //v.vibrate(pattern, -1);
                 }
             }
         }.start();
