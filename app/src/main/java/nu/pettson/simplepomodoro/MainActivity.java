@@ -3,6 +3,7 @@ package nu.pettson.simplepomodoro;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private long timeLeft = 0;
     private int timesDone = 0;
 
+    Vibrator v;
+
     SharedPreferences sharedPref;
     int totalAmountOfTimes = 0;
 
@@ -45,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         circle = (ImageView) findViewById(R.id.circleTime);
         start = (ImageView) findViewById(R.id.playIcon);
+
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         start.setOnClickListener(new View.OnClickListener() {
 
@@ -91,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createCountDown(long millis) {
         final TextView timeText = findViewById(R.id.timeText);
-        statusText.setText("Work");
+        statusText.setText("WORK");
         countDownTimer = new CountDownTimer(millis, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -113,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 amountText.setText(timesDone + " of 4");
                 if (timesDone < 4) {
                     createDownTimeCountDown(5000);
+                    v.vibrate(500);
                 } else if (timesDone == 4) {
                     createDownTimeCountDown(20000);
                     totalAmountOfTimes = totalAmountOfTimes + 1;
@@ -120,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putInt("totalAmountOfTimes", totalAmountOfTimes);
                     editor.commit();
                     //totalPomodoros.setText("Total Pomodoros: " + totalAmountOfTimes);
+                    v.vibrate(1000);
                 }
 
             }
@@ -129,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     private void createDownTimeCountDown(long millis) {
         final TextView timeText = findViewById(R.id.timeText);
         onDownTime = true;
-        statusText.setText("Rest");
+        statusText.setText("REST");
         countDownTimer = new CountDownTimer(millis, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -150,11 +157,14 @@ public class MainActivity extends AppCompatActivity {
                     existingTimer = false;
                     running = false;
                     onDownTime = false;
+                    v.vibrate(1500);
                 } else {
                     circle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
                     start.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.whiteText));
                     createCountDown(10000);
                     onDownTime = false;
+                    final long[] pattern = {0, 500, 500, 500, 500};
+                    v.vibrate(pattern, -1);
                 }
             }
         }.start();
