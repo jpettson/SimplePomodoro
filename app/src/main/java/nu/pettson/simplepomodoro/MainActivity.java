@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     TextView timeText;
     TextView amountText;
     TextView totalPomodoros;
+    TextView statusText;
 
     boolean running = false;
     boolean existingTimer = false;
@@ -38,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         timeText = (TextView) findViewById(R.id.timeText);
         amountText = (TextView) findViewById(R.id.amountText);
-        totalPomodoros = (TextView) findViewById(R.id.totalPomodoros);
-        totalPomodoros.setText("Total Pomodoros: " + totalAmountOfTimes);
+        //totalPomodoros = (TextView) findViewById(R.id.totalPomodoros);
+        statusText = (TextView) findViewById(R.id.statusText);
+        //totalPomodoros.setText("Total Pomodoros: " + totalAmountOfTimes);
 
         circle = (ImageView) findViewById(R.id.circleTime);
         start = (ImageView) findViewById(R.id.playIcon);
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createCountDown(long millis) {
         final TextView timeText = findViewById(R.id.timeText);
+        statusText.setText("Work");
         countDownTimer = new CountDownTimer(millis, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putInt("totalAmountOfTimes", totalAmountOfTimes);
                     editor.commit();
-                    totalPomodoros.setText("Total Pomodoros: " + totalAmountOfTimes);
+                    //totalPomodoros.setText("Total Pomodoros: " + totalAmountOfTimes);
                 }
 
             }
@@ -126,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
     private void createDownTimeCountDown(long millis) {
         final TextView timeText = findViewById(R.id.timeText);
         onDownTime = true;
+        statusText.setText("Rest");
         countDownTimer = new CountDownTimer(millis, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -138,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
 
             public void onFinish() {
                 if (timesDone == 4) {
-                    timeText.setText("done!");
+                    timeText.setText("Done!");
+                    statusText.setText("");
                     start.setImageResource(R.drawable.ic_play_arrow_white_18dp);
                     circle.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
                     start.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.whiteText));
